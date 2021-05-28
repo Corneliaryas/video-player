@@ -9,13 +9,11 @@ const VideoPlayer = styled.video`
  `
 const VideoContainer = styled.div`
   width: 100%;
-  max-width: 853px;
-
+  max-width: 960px;
 `
 
 export const Player = ({ videoFile }) => {
   // Handle custom controls
-  // Change video URL when videoFile changes
   return (
     <VideoContainer>
       <VideoPlayer controls key={videoFile}>

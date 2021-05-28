@@ -9,6 +9,10 @@ const MainContainer = styled.main`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 50px;
+  @media (max-width: 768px) {
+    margin: 0;
+  };
 `
 
 export const App = () => {

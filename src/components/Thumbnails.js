@@ -6,6 +6,31 @@ import styled from 'styled-components'
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 853px;
+  margin: 20px;
+  @media (max-width: 768px) {
+    box-sizing: border-box;
+    padding: 0 2%;
+    margin: 2%;
+
+  };
+  
+
+`
+const Poster = styled.div`
+width: 23%;
+`
+const Image = styled.img`
+  width: 100%;
+`
+const Title = styled.h2`
+  text-align: center;
+  margin: 5px;
+  @media (max-width: 855px) {
+    font-size: 15px;
+  }
 `
 
 export const Thumbnails = ({ videoFile, setVideoFile }) => {
@@ -35,10 +60,10 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
           return (
           // On hover show video.description
 
-            <div key={video.id} onClick={() => changeVideo(video.video)}>
-              <img src={video.image} alt="poster" />
-              <p>{video.name}</p>
-            </div>
+            <Poster key={video.id} onClick={() => changeVideo(video.video)}>
+              <Image src={video.image} alt="poster" />
+              <Title>{video.name}</Title>
+            </Poster>
           )
         })}
       </Container>

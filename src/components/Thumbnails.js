@@ -15,22 +15,24 @@ const Container = styled.div`
   };
 `
 const Description = styled.div`
-  // Make sure it does not get out of window
   display: none;
   position: absolute;
-  left: ${props => props.position[0]}px;
-  top: ${props => props.position[1]}px;
+  left: ${(props) => props.position[0]}px;
+  top: ${(props) => props.position[1]}px;
   max-width: 400px;
+  max-height: 100vh;
   padding: 0 20px;
   background-color: rgba(255,255,255,0.9);
   border-radius: 5px;
   z-index: 1;
   @media (max-width: 768px) {
     font-size: 10px;
+    max-width: 50%;
   };
 `
 const Poster = styled.div`
   width: 23%;
+  cursor: pointer;
   :hover ${Description}{
     display: block;
   }
@@ -48,7 +50,7 @@ const Title = styled.h2`
 
 export const Thumbnails = ({ videoFile, setVideoFile }) => {
   const [videos, setVideos] = useState([])
-  const [mousePosition, setMousePosition] = useState([0,0])
+  const [mousePosition, setMousePosition] = useState([0, 0])
   const API_URL = 'https://gist.githubusercontent.com/mohammedhammoud/cf7aca4c87462cd061d4f2b1184392a8/raw/ea14389e293b478bdbace627d776ba6f7d735f14/teliatestdata.json'
 
   useEffect(() => {
@@ -57,7 +59,6 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
       .then((videos) => {
         setVideos(videos)
         setVideoFile(videos[0].video)
-        console.log(videos)
       })
   }, [setVideoFile])
 
@@ -66,6 +67,21 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
       setVideoFile(video)
     }
   }
+
+  const handleMouseMove = (e, id) => {
+    const description = document.getElementById(`description${id}`);
+    const descriptionEdges = description.getBoundingClientRect();
+    if (((window.innerWidth - descriptionEdges.width) < e.clientX) && ((window.innerHeight - descriptionEdges.height) < e.clientY)) {
+      setMousePosition([(e.clientX - descriptionEdges.width), (e.clientY - descriptionEdges.height)])
+    } else if ((window.innerHeight - descriptionEdges.height) < e.clientY) {
+      setMousePosition([e.clientX, (e.clientY - descriptionEdges.height)])
+    } else if ((window.innerWidth - descriptionEdges.width) < e.clientX) {
+      setMousePosition([(e.clientX - descriptionEdges.width), e.clientY])
+    } else {
+      setMousePosition([e.clientX, e.clientY])
+    }
+  }
+
   if (videos.length > 0) {
     return (
       <Container>
@@ -74,12 +90,16 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
             <Poster
               key={video.id}
               onClick={() => changeVideo(video.video)}
-              onMouseEnter={(e) => setMousePosition([e.clientX, e.clientY])}
-              onMouseMove={(e) => setMousePosition([e.clientX, e.clientY])}
+              role="button"
+              aria-label={video.title}
+              tabIndex="0"
+              onKeyDown={() => changeVideo(video.video)}
+              onMouseEnter={(e) => handleMouseMove(e, video.id)}
+              onMouseMove={(e) => handleMouseMove(e, video.id)}
               onMouseLeave={() => setMousePosition([0, 0])}>
               <Image src={video.image} alt="poster" />
               <Title>{video.name}</Title>
-              <Description position={mousePosition}>
+              <Description position={mousePosition} id={`description${video.id}`}>
                 <p>{video.description}</p>
               </Description>
             </Poster>

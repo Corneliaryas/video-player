@@ -4,6 +4,16 @@ import styled from 'styled-components'
 import { Player } from './components/Player'
 import { Thumbnails } from './components/Thumbnails'
 
+export const App = () => {
+  const [videoFile, setVideoFile] = useState("")
+  return (
+    <MainContainer>
+      <Player videoFile={videoFile} />
+      <Thumbnails videoFile={videoFile} setVideoFile={setVideoFile} />
+    </MainContainer>
+  );
+};
+
 const MainContainer = styled.main`
   display: flex;
   justify-content: center;
@@ -14,13 +24,3 @@ const MainContainer = styled.main`
     margin: 0;
   };
 `
-
-export const App = () => {
-  const [videoFile, setVideoFile] = useState()
-  return (
-    <MainContainer>
-      <Player videoFile={videoFile} />
-      <Thumbnails videoFile={videoFile} setVideoFile={setVideoFile} />
-    </MainContainer>
-  );
-};

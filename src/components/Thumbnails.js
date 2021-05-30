@@ -1,53 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 960px;
-  margin: 20px;
-  @media (max-width: 768px) {
-    box-sizing: border-box;
-    padding: 0 2%;
-    margin: 2%;
-  };
-`
-const Description = styled.div`
-  display: none;
-  position: absolute;
-  left: ${(props) => props.position[0]}px;
-  top: ${(props) => props.position[1]}px;
-  max-width: 400px;
-  max-height: 100vh;
-  padding: 0 20px;
-  background-color: rgba(255,255,255,0.9);
-  border-radius: 5px;
-  z-index: 1;
-  @media (max-width: 768px) {
-    font-size: 10px;
-    max-width: 50%;
-  };
-`
-const Poster = styled.div`
-  width: 23%;
-  cursor: pointer;
-  :hover ${Description}{
-    display: block;
-  }
-`
-const Image = styled.img`
-  width: 100%;
-`
-const Title = styled.h2`
-  text-align: center;
-  margin: 5px;
-  @media (max-width: 855px) {
-    font-size: 15px;
-  }
-`
-
 export const Thumbnails = ({ videoFile, setVideoFile }) => {
   const [videos, setVideos] = useState([])
   const [mousePosition, setMousePosition] = useState([0, 0])
@@ -56,9 +9,9 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
-      .then((videos) => {
-        setVideos(videos)
-        setVideoFile(videos[0].video)
+      .then((videoData) => {
+        setVideos(videoData)
+        setVideoFile(videoData[0].video)
       })
   }, [setVideoFile])
 
@@ -110,3 +63,50 @@ export const Thumbnails = ({ videoFile, setVideoFile }) => {
   }
   return <p>Could not find videos</p>
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 960px;
+  margin: 20px;
+  @media (max-width: 768px) {
+    box-sizing: border-box;
+    padding: 0 2%;
+    margin: 2%;
+  };
+`
+const Description = styled.div`
+  display: none;
+  position: absolute;
+  left: ${(props) => props.position[0]}px;
+  top: ${(props) => props.position[1]}px;
+  max-width: 400px;
+  max-height: 100vh;
+  padding: 0 20px;
+  background-color: rgba(255,255,255,0.9);
+  border-radius: 5px;
+  z-index: 1;
+  @media (max-width: 768px) {
+    font-size: 10px;
+    max-width: 50%;
+  };
+`
+const Poster = styled.div`
+  width: 23%;
+  cursor: pointer;
+  :hover ${Description}{
+    display: block;
+  }
+`
+const Image = styled.img`
+  width: 100%;
+`
+const Title = styled.h2`
+  text-align: center;
+  margin: 5px;
+  @media (max-width: 855px) {
+    font-size: 15px;
+  }
+`

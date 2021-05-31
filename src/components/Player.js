@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const Player = ({ videoFile }) => {
   if (videoFile) {
-    const videoSource = document.getElementById('video-source"');
+    const videoSource = document.getElementById('video-source');
     videoSource.addEventListener('error', () => {
       alert('Browser does not support video source');
     })

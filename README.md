@@ -3,7 +3,7 @@ Video Player built in React.
 
 
 ## Known bugs and issues
-Aspect-ratio not supported in firfox.
+Aspect-ratio not supported in firefox.
 
 Http requests (like the video-urls) not supported in google chrome, needs to be https.
 

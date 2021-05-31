@@ -2,16 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const Player = ({ videoFile }) => {
-  if(videoFile){
-  const video = document.getElementById('video');
-  video.addEventListener('error', () => {
-    alert('Browser does not support video source');
-  })}
+  if (videoFile) {
+    const videoSource = document.getElementById('video-source"');
+    videoSource.addEventListener('error', () => {
+      alert('Browser does not support video source');
+    })
+  }
 
   return (
     <VideoContainer>
       <VideoPlayer controls key={videoFile} id="video">
-        <source src={videoFile} type="video/mp4" />
+        <source src={videoFile} type="video/mp4" id="video-source"/>
             Your browser does not support mp4
       </VideoPlayer>
     </VideoContainer>

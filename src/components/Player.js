@@ -1,9 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-
 export const Player = ({ videoFile }) => {
- 
+  if(videoFile){
+  const video = document.getElementById('video');
+  video.addEventListener('error', () => {
+    alert('Browser does not support video source');
+  })}
+
   return (
     <VideoContainer>
       <VideoPlayer controls key={videoFile} id="video">

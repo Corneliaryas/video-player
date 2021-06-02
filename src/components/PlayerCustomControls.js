@@ -14,16 +14,15 @@ export const PlayerCustomControls = ({ videoFile }) => {
   const [videoDuration, setVideoDuration] = useState()
   let sliderInterval = useRef(null)
   let timeInterval = useRef(null)
-  console.log(videoDuration)
+
   useEffect(() => {
     setVideoTime('0')
     setSliderValue('0')
     setIsPlaying(false)
     if (videoFile) {
       const video = document.getElementById('video')
-      console.log(video.duration)
       video.onloadedmetadata = () => {
-      setVideoDuration(video.duration.toFixed(0))}
+        setVideoDuration(video.duration.toFixed(0))}
       video.pause();
       video.currentTime = 0;
     }

@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Player } from './components/Player'
+import { PlayerCustomControls } from 'components/PlayerCustomControls';
 import { Thumbnails } from './components/Thumbnails'
 
 export const App = () => {
   const [videoFile, setVideoFile] = useState("")
   return (
     <MainContainer>
-      <Player videoFile={videoFile} />
+      <PlayerCustomControls videoFile={videoFile} />
       <Thumbnails videoFile={videoFile} setVideoFile={setVideoFile} />
     </MainContainer>
   );

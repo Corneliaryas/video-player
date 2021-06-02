@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import pause from '../assets/pause.svg'
@@ -11,19 +11,27 @@ export const PlayerCustomControls = ({ videoFile }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [sliderValue, setSliderValue] = useState('0')
   const [isMuted, setIsMuted] = useState(false)
-  const [videoDuration, setVideoDuration] = useState('0')
-
+  const [videoDuration, setVideoDuration] = useState()
+  let sliderInterval = useRef(null)
+  let timeInterval = useRef(null)
+  console.log(videoDuration)
   useEffect(() => {
     setVideoTime('0')
     setSliderValue('0')
     setIsPlaying(false)
     if (videoFile) {
       const video = document.getElementById('video')
-      setVideoDuration(video.duration.toFixed(0))
+      console.log(video.duration)
+      video.onloadedmetadata = () => {
+      setVideoDuration(video.duration.toFixed(0))}
       video.pause();
       video.currentTime = 0;
     }
-  },[videoFile])
+    return () => {
+      clearInterval(timeInterval.current)
+      clearInterval(sliderInterval.current)
+    }
+  }, [videoFile])
 
   const playPause = () => {
     const video = document.getElementById('video');
@@ -33,18 +41,21 @@ export const PlayerCustomControls = ({ videoFile }) => {
       setIsPlaying(false);
     }
     if (!isPlaying) {
+      if (sliderInterval.current) {
+        clearInterval(sliderInterval.current)
+      } if (timeInterval.current) {
+        clearInterval(timeInterval.current)
+      }
       video.play();
       setIsPlaying(true);
-      const sliderInterval = setInterval(() => setSliderValue((video.currentTime / video.duration) * 100), 250)
+      sliderInterval.current = setInterval(() => setSliderValue((video.currentTime / video.duration) * 100), 250)
       if (video.currentTime < video.duration) {
-        const timeInterval = setInterval(() => setVideoTime(video.currentTime.toFixed()), 500)
-        return () => clearInterval(timeInterval);
+        timeInterval.current = setInterval(() => setVideoTime(video.currentTime.toFixed()), 500)
       }
-      return () => clearInterval(sliderInterval)
     }
   };
 
-  // Play/Pause, slider values
+  // Slider values
   const timer = (e) => {
     const video = document.getElementById('video');
     video.currentTime = video.duration * (e / 100);
@@ -66,7 +77,7 @@ export const PlayerCustomControls = ({ videoFile }) => {
   return (
     <VideoContainer>
       <VideoPlayer key={videoFile} id="video">
-        <source src={videoFile} type="video/mp4" id="video-source"/>
+        <source src={videoFile} type="video/mp4" id="video-source" />
             Your browser does not support mp4
       </VideoPlayer>
       <CustomControls>
@@ -99,43 +110,43 @@ const VideoPlayer = styled.video`
   background-color: black;
  `
 const CustomControls = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-position: absolute;
-left: 0;
-bottom: 0;
-width: 100%;
-color: white;
-z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  z-index: 1;
 `
 const Slider = styled.input`
-width: 90%;
--webkit-appearance: none;
-appearance: none;
-height: 2px;
-border-radius: 20px;
-background: linear-gradient(
-  90deg,
-  rgb(255, 0, 0) ${(props) => props.gradient}%,
-  rgba(255, 255, 255, 0.5) ${(props) => props.gradient}%
-);
-::-webkit-slider-thumb {
+  width: 90%;
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
-  background-color: white;
+  height: 2px;
   border-radius: 20px;
-}
+  background: linear-gradient(
+    90deg,
+    rgb(255, 0, 0) ${(props) => props.gradient}%,
+    rgba(255, 255, 255, 0.5) ${(props) => props.gradient}%
+  );
+  ::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 20px;
+  }
 `
 const Icon = styled.img`
-width: 40px;
-height: 40px;
-background-color: transparent;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
 `
 const Button = styled.button`
-background-color: transparent;
-border: none;
+  background-color: transparent;
+  border: none;
 `
